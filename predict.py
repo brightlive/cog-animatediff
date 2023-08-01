@@ -24,10 +24,48 @@ from diffusers.utils.import_utils import is_xformers_available
 class Predictor(BasePredictor):
     def setup(self) -> None:
         """Load the model into memory to make running multiple predictions efficient"""
+        pass
+
+    def predict(
+        self,
+        motion_module: str = Input(
+            description="Select a Motion Model",
+            default="mm_sd_v15",
+            choices=[
+                "mm_sd_v14",
+                "mm_sd_v15"
+            ],
+        ),
+        model_name: str = Input(
+            default="stable-diffusion-v1-5",
+            description="Select a Model",
+            choices=[
+                "stable-diffusion-v1-5",
+                "openjourney-v4",
+                "anything-v3.0",
+                "mo-di-diffusion"
+            ],
+        ),
+        # base: str = Input(description="Base Img", default=""),
+        path: str = Input(
+            default="",
+            description="Select a Module",
+        ),
+        prompt: str = Input(description="Input prompt", default="masterpiece, best quality, 1girl, solo, cherry blossoms, hanami, pink flower, white flower, spring season, wisteria, petals, flower, plum blossoms, outdoors, falling petals, white hair, black eyes"),
+        n_prompt: str = Input(description="Negative prompt", default=""),
+        steps: int = Input(description="Number of inference steps", ge=1, le=100, default=25),
+        guidance_scale: float = Input(description="guidance scale", ge=1, le=10, default=7.5),
+        seed: int = Input(description="Seed (0 = random, maximum: 2147483647)", default=0),
+        video_length: int = Input(description="Number of frames", default=16)
+    ) -> Path:
+        """Run a single prediction on the model"""
+        lora_alpha=0.8
+        base=""
+
         inference_config_file = "/AnimateDiff/configs/inference/inference.yaml"
         inference_config = OmegaConf.load(inference_config_file)
 
-        pretrained_model_path = "/AnimateDiff/models/StableDiffusion/stable-diffusion-v1-5"
+        pretrained_model_path = "/AnimateDiff/models/" + model_name
         self.tokenizer = CLIPTokenizer.from_pretrained(pretrained_model_path, subfolder="tokenizer")
         self.text_encoder = CLIPTextModel.from_pretrained(pretrained_model_path, subfolder="text_encoder").cuda()
         self.vae = AutoencoderKL.from_pretrained(pretrained_model_path, subfolder="vae")
@@ -44,37 +82,6 @@ class Predictor(BasePredictor):
             scheduler=DDIMScheduler(**OmegaConf.to_container(inference_config.noise_scheduler_kwargs)),
         ).to("cuda")
 
-    def predict(
-        self,
-        motion_module: str = Input(
-            description="Select a Motion Model",
-            default="mm_sd_v14",
-            choices=[
-                "mm_sd_v14",
-                "mm_sd_v15"
-            ],
-        ),
-        # base: str = Input(description="Base Img", default=""),
-        path: str = Input(
-            default="toonyou_beta3.safetensors",
-            choices=[
-                "toonyou_beta3.safetensors",
-                "lyriel_v16.safetensors",
-                "rcnzCartoon3d_v10.safetensors",
-                "majicmixRealistic_v5Preview.safetensors",
-                "realisticVisionV40_v20Novae.safetensors"
-            ],
-            description="Select a Module",
-        ),
-        prompt: str = Input(description="Input prompt", default="masterpiece, best quality, 1girl, solo, cherry blossoms, hanami, pink flower, white flower, spring season, wisteria, petals, flower, plum blossoms, outdoors, falling petals, white hair, black eyes"),
-        n_prompt: str = Input(description="Negative prompt", default=""),
-        steps: int = Input(description="Number of inference steps", ge=1, le=100, default=25),
-        guidance_scale: float = Input(description="guidance scale", ge=1, le=10, default=7.5),
-        seed: int = Input(description="Seed (0 = random, maximum: 2147483647)", default=0),
-    ) -> Path:
-        """Run a single prediction on the model"""
-        lora_alpha=0.8
-        base=""
         # Create paths and load motion model
         newPath = "models/DreamBooth_LoRA/"+path
         motion_path = "/AnimateDiff/models/Motion_Module/"+motion_module+".ckpt"
@@ -133,7 +140,7 @@ class Predictor(BasePredictor):
             guidance_scale      = guidance_scale,
             width               = 512,
             height              = 512,
-            video_length        = 16,
+            video_length        = video_length,
         ).videos
 
         samples = torch.concat([sample])

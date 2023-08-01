@@ -21,7 +21,10 @@ build:
   - git clone https://github.com/guoyww/AnimateDiff /AnimateDiff
   - apt-get update && apt-get install -y git-lfs ffmpeg
   - git lfs install
-  - git clone --branch fp16 https://huggingface.co/runwayml/stable-diffusion-v1-5 /AnimateDiff/models/StableDiffusion/stable-diffusion-v1-5
+  - git clone --branch fp16 https://huggingface.co/runwayml/stable-diffusion-v1-5 /AnimateDiff/models/stable-diffusion-v1-5
+  - git clone https://huggingface.co/prompthero/openjourney-v4 /AnimateDiff/models/openjourney-v4
+  - git clone https://huggingface.co/admruul/anything-v3.0 /AnimateDiff/models/anything-v3.0
+  - git clone https://huggingface.co/nitrosocke/mo-di-diffusion /AnimateDiff/models/mo-di-diffusion
   - wget -O /AnimateDiff/models/Motion_Module/mm_sd_v14.ckpt https://huggingface.co/guoyww/animatediff/resolve/main/mm_sd_v14.ckpt 
   - wget -O /AnimateDiff/models/Motion_Module/mm_sd_v15.ckpt https://huggingface.co/guoyww/animatediff/resolve/main/mm_sd_v15.ckpt 
   - wget -O /AnimateDiff/models/DreamBooth_LoRA/toonyou_beta3.safetensors https://civitai.com/api/download/models/78775
