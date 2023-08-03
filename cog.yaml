@@ -22,15 +22,12 @@ build:
   - apt-get update && apt-get install -y git-lfs ffmpeg
   - git lfs install
   - git clone --branch fp16 https://huggingface.co/runwayml/stable-diffusion-v1-5 /AnimateDiff/models/stable-diffusion-v1-5
-  - git clone https://huggingface.co/prompthero/openjourney-v4 /AnimateDiff/models/openjourney-v4
-  - git clone https://huggingface.co/admruul/anything-v3.0 /AnimateDiff/models/anything-v3.0
-  - git clone https://huggingface.co/nitrosocke/mo-di-diffusion /AnimateDiff/models/mo-di-diffusion
   - wget -O /AnimateDiff/models/Motion_Module/mm_sd_v14.ckpt https://huggingface.co/guoyww/animatediff/resolve/main/mm_sd_v14.ckpt 
   - wget -O /AnimateDiff/models/Motion_Module/mm_sd_v15.ckpt https://huggingface.co/guoyww/animatediff/resolve/main/mm_sd_v15.ckpt 
-  - wget -O /AnimateDiff/models/DreamBooth_LoRA/toonyou_beta3.safetensors https://civitai.com/api/download/models/78775
-  - wget -O /AnimateDiff/models/DreamBooth_LoRA/lyriel_v16.safetensors https://civitai.com/api/download/models/72396
-  - wget -O /AnimateDiff/models/DreamBooth_LoRA/rcnzCartoon3d_v10.safetensors https://civitai.com/api/download/models/71009
-  - wget -O /AnimateDiff/models/DreamBooth_LoRA/majicmixRealistic_v5Preview.safetensors https://civitai.com/api/download/models/79068
-  - wget -O /AnimateDiff/models/DreamBooth_LoRA/realisticVisionV40_v20Novae.safetensors https://civitai.com/api/download/models/29460
+  - wget -O /AnimateDiff/models/toonyou_beta3.safetensors https://civitai.com/api/download/models/78775
+  - wget -O /AnimateDiff/models/lyriel_v16.safetensors https://civitai.com/api/download/models/72396
+  - wget -O /AnimateDiff/models/rcnzCartoon3d_v10.safetensors https://civitai.com/api/download/models/71009
+  - wget -O /AnimateDiff/models/majicmixRealistic_v5Preview.safetensors https://civitai.com/api/download/models/79068
+  - wget -O /AnimateDiff/models/realisticVisionV40_v20Novae.safetensors https://civitai.com/api/download/models/29460
 
 predict: "predict.py:Predictor"

@@ -54,9 +54,10 @@ class Predictor(BasePredictor):
         prompt: str = Input(description="Input prompt", default="masterpiece, best quality, 1girl, solo, cherry blossoms, hanami, pink flower, white flower, spring season, wisteria, petals, flower, plum blossoms, outdoors, falling petals, white hair, black eyes"),
         n_prompt: str = Input(description="Negative prompt", default=""),
         steps: int = Input(description="Number of inference steps", ge=1, le=100, default=25),
-        guidance_scale: float = Input(description="guidance scale", ge=1, le=10, default=7.5),
+        guidance_scale: float = Input(description="guidance scale", ge=1, le=20, default=7.5),
         seed: int = Input(description="Seed (0 = random, maximum: 2147483647)", default=0),
-        video_length: int = Input(description="Number of frames", default=16)
+        video_length: int = Input(description="Number of frames", default=16),
+        fps: int = Input(description="Frames per second", default=8)
     ) -> Path:
         """Run a single prediction on the model"""
         lora_alpha=0.8
@@ -83,7 +84,7 @@ class Predictor(BasePredictor):
         ).to("cuda")
 
         # Create paths and load motion model
-        newPath = "models/DreamBooth_LoRA/"+path
+        newPath = "models/"+path
         motion_path = "/AnimateDiff/models/Motion_Module/"+motion_module+".ckpt"
         motion_module_state_dict = torch.load(motion_path, map_location="cpu")
         missing, unexpected = self.unet.load_state_dict(motion_module_state_dict, strict=False)
@@ -140,6 +141,7 @@ class Predictor(BasePredictor):
             guidance_scale      = guidance_scale,
             width               = 512,
             height              = 512,
+            fps                 = fps,  
             video_length        = video_length,
         ).videos
 
