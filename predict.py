@@ -75,7 +75,6 @@ class Predictor(BasePredictor):
             subfolder="unet", 
             unet_additional_kwargs=OmegaConf.to_container(inference_config.unet_additional_kwargs),
             #cache_dir=f"./models_cache"
-            cache_dir="models_cache"
         )
         
         if is_xformers_available(): self.unet.enable_xformers_memory_efficient_attention()
