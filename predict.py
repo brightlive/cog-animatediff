@@ -73,7 +73,9 @@ class Predictor(BasePredictor):
         self.unet = UNet3DConditionModel.from_pretrained_2d(
             pretrained_model_path, 
             subfolder="unet", 
-            unet_additional_kwargs=OmegaConf.to_container(inference_config.unet_additional_kwargs)
+            unet_additional_kwargs=OmegaConf.to_container(inference_config.unet_additional_kwargs),
+            #cache_dir=f"./models_cache"
+            cache_dir=Path(tempfile.mkdtemp()) / "models_cache"
         )
         
         if is_xformers_available(): self.unet.enable_xformers_memory_efficient_attention()
