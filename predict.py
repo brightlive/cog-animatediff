@@ -66,7 +66,7 @@ class Predictor(BasePredictor):
         inference_config_file = "/AnimateDiff/configs/inference/inference.yaml"
         inference_config = OmegaConf.load(inference_config_file)
 
-        pretrained_model_path = "/AnimateDiff/models/" + model_name
+        pretrained_model_path = Path(tempfile.mkdtemp()) / "models_cache/stable-diffusion-v1-5"
         self.tokenizer = CLIPTokenizer.from_pretrained(pretrained_model_path, subfolder="tokenizer")
         self.text_encoder = CLIPTextModel.from_pretrained(pretrained_model_path, subfolder="text_encoder").cuda()
         self.vae = AutoencoderKL.from_pretrained(pretrained_model_path, subfolder="vae")
