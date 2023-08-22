@@ -66,7 +66,7 @@ class Predictor(BasePredictor):
         inference_config_file = "/AnimateDiff/configs/inference/inference.yaml"
         inference_config = OmegaConf.load(inference_config_file)
 
-        pretrained_model_path = Path(tempfile.mkdtemp()) / "models_cache/stable-diffusion-v1-5"
+        pretrained_model_path = "models_cache/stable-diffusion-v1-5"
         self.tokenizer = CLIPTokenizer.from_pretrained(pretrained_model_path, subfolder="tokenizer")
         self.text_encoder = CLIPTextModel.from_pretrained(pretrained_model_path, subfolder="text_encoder").cuda()
         self.vae = AutoencoderKL.from_pretrained(pretrained_model_path, subfolder="vae")
@@ -75,7 +75,7 @@ class Predictor(BasePredictor):
             subfolder="unet", 
             unet_additional_kwargs=OmegaConf.to_container(inference_config.unet_additional_kwargs),
             #cache_dir=f"./models_cache"
-            cache_dir=Path(tempfile.mkdtemp()) / "models_cache"
+            cache_dir="models_cache"
         )
         
         if is_xformers_available(): self.unet.enable_xformers_memory_efficient_attention()
