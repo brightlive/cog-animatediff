@@ -8,10 +8,9 @@ import sys
 sys.path.append('.')
 
 os.system("mkdir models_cache")
-os.system("cd models_cache")
-
+os.chdir("models_cache")
 os.system("git clone --branch fp16 https://huggingface.co/runwayml/stable-diffusion-v1-5")
-os.system("cd stable-diffusion-v1-5")
+os.chdir("stable-diffusion-v1-5")
 os.system("apt-get install git-lfs")
 os.system("git lfs install")
 os.system("git lfs pull")
