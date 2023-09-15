@@ -30,10 +30,11 @@ class Predictor(BasePredictor):
         self,
         motion_module: str = Input(
             description="Select a Motion Model",
-            default="mm_sd_v15",
+            default="mm_sd_v15_v2",
             choices=[
                 "mm_sd_v14",
-                "mm_sd_v15"
+                "mm_sd_v15",
+                "mm_sd_v15_v2"
             ],
         ),
         model_name: str = Input(
