@@ -57,6 +57,7 @@ class Predictor(BasePredictor):
         guidance_scale: float = Input(description="guidance scale", ge=1, le=20, default=7.5),
         seed: int = Input(description="Seed (0 = random, maximum: 2147483647)", default=0),
         video_length: int = Input(description="Number of frames", default=16),
+        context_size: int = Input(description="Context size in frames", default=6),
         fps: int = Input(description="Frames per second", default=8)
     ) -> Path:
         """Run a single prediction on the model"""
@@ -138,6 +139,8 @@ class Predictor(BasePredictor):
         sample = self.pipeline(
             prompt,
             negative_prompt     = n_prompt,
+            #init_image          = "brian512.jpg",
+            context_size        = context_size,
             num_inference_steps = steps,
             guidance_scale      = guidance_scale,
             width               = 512,

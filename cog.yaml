@@ -18,7 +18,7 @@ build:
 
   run:
   - pip install xformers
-  - git clone https://github.com/guoyww/AnimateDiff /AnimateDiff
+  - git clone https://github.com/brightlive/animatediff-img /AnimateDiff
   - apt-get update && apt-get install -y git-lfs ffmpeg
   - git lfs install
   - git clone --branch fp16 https://huggingface.co/runwayml/stable-diffusion-v1-5 /AnimateDiff/models/stable-diffusion-v1-5
